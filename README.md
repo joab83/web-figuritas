@@ -1,59 +1,164 @@
-# WebFiguritas
+# Web Figuritas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+Frontend Angular para consultar, filtrar y reservar figuritas de un álbum. La aplicación consume una API local, muestra el stock actualizado y permite generar pedidos para enviarlos por WhatsApp.
 
-## Development server
+## Funcionalidades
 
-To start a local development server, run:
+### Catálogo
 
-```bash
-ng serve
-```
+- Visualización de las figuritas del álbum con imagen, SKU, nombre, precio y stock disponible.
+- Indicadores visuales para figuritas agotadas y destacadas.
+- Imágenes con fallback cuando el archivo JPG no existe.
+- Actualización manual del catálogo mediante el botón `Refrescar`.
+- Descuento visual del stock cuando una figurita se agrega al carrito.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Filtros
 
-## Code scaffolding
+- Búsqueda por SKU o nombre.
+- Filtro por grupo o selección.
+- Checkbox `Solo disponibles`.
+- Checkbox `Solo destacadas`.
+- Conservación de los filtros al refrescar la información.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Carrito y pedidos
 
-```bash
-ng generate component component-name
-```
+- Alta de figuritas desde el botón `+ Reservar`.
+- Modal inicial para solicitar teléfono obligatorio y nombre opcional.
+- Contador de figuritas en el botón `Carrito`.
+- Modificación de cantidades, eliminación de figuritas y cálculo de subtotal.
+- Notas opcionales antes de finalizar el pedido.
+- Registro del pedido mediante la API.
+- Apertura de WhatsApp con un mensaje precompletado que incluye detalle, total, cliente e ID del pedido.
+- Pantalla de confirmación final y limpieza del carrito al volver al catálogo.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Otras páginas
 
-```bash
-ng generate --help
-```
+- `/`: catálogo principal.
+- `/carrito`: carrito y finalización del pedido.
+- `/como-comprar`: guía de compra y preguntas frecuentes.
 
-## Building
+## Requisitos
 
-To build the project run:
+- Node.js 22 o compatible.
+- npm.
+- API backend disponible en `http://localhost:5080`.
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Instalación
 
 ```bash
-ng e2e
+npm install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+En Windows con restricciones de PowerShell se puede utilizar:
 
-## Additional Resources
+```powershell
+npm.cmd install
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Ejecución local
+
+```bash
+npm start
+```
+
+La aplicación estará disponible en:
+
+```text
+http://localhost:4200
+```
+
+El proxy de desarrollo definido en `proxy.conf.json` redirige `/api` hacia:
+
+```text
+http://localhost:5080
+```
+
+## Endpoints utilizados
+
+| Método | Endpoint | Uso |
+| --- | --- | --- |
+| `GET` | `/api/albums?id_album=1` | Información del álbum |
+| `GET` | `/api/stickers?id_album=1` | Catálogo y stock de figuritas |
+| `GET` | `/api/stickers/groups` | Opciones del filtro por grupo |
+| `POST` | `/api/pedidos` | Registro del pedido |
+
+Ejemplo de alta de pedido:
+
+```json
+{
+  "nombre": "Juan Perez",
+  "numero_telefono": "1123456789",
+  "comentario": "Entregar por la tarde",
+  "stickers": [
+    {
+      "id_album": 1,
+      "sku": "ALG14",
+      "cantidad": 2
+    }
+  ]
+}
+```
+
+Respuesta esperada:
+
+```json
+{
+  "id_pedido": 1
+}
+```
+
+## Imágenes
+
+Las imágenes JPG se encuentran en:
+
+```text
+public/images/stickers
+```
+
+La nomenclatura utiliza grupo, número de figurita e ID del álbum:
+
+```text
+{grupo}_{numero}_{id_album}.jpg
+```
+
+Ejemplo:
+
+```text
+ARG_17_1.jpg
+```
+
+## Estructura
+
+```text
+src/app
+├── core
+│   ├── models
+│   ├── services
+│   └── utils
+└── features
+    ├── cart
+    ├── how-to-buy
+    └── stickers
+```
+
+- `core`: modelos, servicios HTTP, estado compartido del carrito y utilidades.
+- `features/stickers`: catálogo, tarjetas y filtros.
+- `features/cart`: modal de reserva, carrito y confirmación del pedido.
+- `features/how-to-buy`: guía de compra.
+
+## Comandos
+
+```bash
+npm start       # Servidor de desarrollo
+npm run build   # Build de producción
+npm test        # Tests unitarios con Karma
+```
+
+En Windows también se pueden ejecutar con `npm.cmd`.
+
+## Consideraciones actuales
+
+- El carrito se mantiene en memoria mientras se navega dentro de la aplicación.
+- Al recargar la pestaña, el carrito se reinicia.
+- El stock se descuenta visualmente al agregar figuritas y se registra definitivamente al enviar el pedido.
+- WhatsApp se abre con el mensaje preparado; el usuario debe confirmar el envío.
