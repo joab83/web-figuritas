@@ -1,0 +1,152 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.how-to-buy {
+  width: min(100% - 2rem, 48rem);
+  margin-inline: auto;
+  padding: 2.5rem 0 4rem;
+}
+
+.back-link,
+.catalog-link {
+  color: #8edb73;
+  font-weight: 700;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+  }
+}
+
+header {
+  margin: 2.3rem 0 2rem;
+  text-align: center;
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    margin-top: 0.45rem;
+    color: #f4f7f5;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 3.6rem);
+    letter-spacing: -0.07em;
+  }
+
+  p:last-child {
+    margin-top: 0.65rem;
+    color: #aab5b0;
+  }
+}
+
+.eyebrow {
+  color: #8edb73;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.steps {
+  display: grid;
+  gap: 0.85rem;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    gap: 1rem;
+    padding: 1.2rem;
+    border: 1px solid #29312e;
+    border-radius: 1rem;
+    background: #121614;
+    box-shadow: 0 0.75rem 1.6rem rgba(0, 0, 0, 0.12);
+  }
+
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: #f4f7f5;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem;
+  }
+
+  p {
+    margin-top: 0.35rem;
+    color: #aab5b0;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}
+
+.step-number {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: rgba(115, 201, 83, 0.14);
+  color: #9ee388;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  place-items: center;
+}
+
+.questions {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid rgba(245, 182, 57, 0.35);
+  border-radius: 1rem;
+  background: rgba(245, 182, 57, 0.08);
+
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h2 {
+    color: #ffd47d;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+  }
+
+  div {
+    margin-top: 1rem;
+  }
+
+  h3 {
+    color: #f5deb0;
+    font-size: 0.9rem;
+  }
+
+  p {
+    margin-top: 0.25rem;
+    color: #cdbb98;
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+}
+
+.catalog-link {
+  display: table;
+  margin: 2rem auto 0;
+  padding: 0.85rem 1.25rem;
+  border-radius: 10rem;
+  background: #73c953;
+  color: #071008;
+
+  &:hover {
+    background: #8add6a;
+    text-decoration: none;
+  }
+}

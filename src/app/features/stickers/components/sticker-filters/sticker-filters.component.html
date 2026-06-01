@@ -1,0 +1,45 @@
+<section class="filters" aria-label="Filtros de figuritas">
+  <label class="search">
+    <span class="search__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="m21 21-4.4-4.4m2.4-5.1a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"/></svg>
+    </span>
+    <span class="sr-only">Buscar figurita por SKU o nombre</span>
+    <input
+      type="search"
+      placeholder="Buscar por SKU o nombre"
+      autocomplete="off"
+      [value]="searchTerm()"
+      (input)="updateSearch($event)"
+    />
+  </label>
+
+  <label class="group">
+    <span class="sr-only">Filtrar por grupo</span>
+    <select [value]="selectedGroup()" (change)="updateGroup($event)">
+      <option value="">Todos los grupos</option>
+      @for (group of groups(); track group) {
+        <option [value]="group">{{ group }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="availability">
+    <input
+      type="checkbox"
+      [checked]="onlyAvailable()"
+      (change)="updateAvailability($event)"
+    />
+    <span class="availability__check" aria-hidden="true"></span>
+    <span>Solo disponibles</span>
+  </label>
+
+  <label class="availability">
+    <input
+      type="checkbox"
+      [checked]="onlyFeatured()"
+      (change)="updateFeatured($event)"
+    />
+    <span class="availability__check" aria-hidden="true"></span>
+    <span>Solo destacadas</span>
+  </label>
+</section>

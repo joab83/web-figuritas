@@ -1,0 +1,123 @@
+<header class="topbar">
+  <div class="topbar__content">
+    <a class="brand" href="/" aria-label="Figuritas inicio">
+      <span class="brand__mark" aria-hidden="true">
+        <img src="/images/logo-fifa-26.jpg" alt="" />
+      </span>
+      <span>FIGURITAS</span>
+    </a>
+    <div class="topbar__actions">
+      <span class="topbar__badge">Catálogo en vivo</span>
+      <a class="cart-button" routerLink="/carrito">
+        <span aria-hidden="true">🛒</span>
+        Carrito
+        @if (cart.totalItems()) {
+          <strong>{{ cart.totalItems() }}</strong>
+        }
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">Colección 2026</p>
+    <h1>Encontrá las figuritas<br /><span>que te faltan.</span></h1>
+    <p class="hero__copy">Explorá el álbum completo y filtrá rápidamente por código o disponibilidad.</p>
+  </section>
+
+  <section class="catalog" aria-labelledby="catalog-title">
+    <div class="catalog__heading">
+      <div>
+        <h2 id="catalog-title">{{ album()?.descripcion || 'Álbum #1' }}</h2>
+        <p class="catalog__description">
+          Catálogo en vivo. Reservá las que necesités, te bloqueamos el stock y coordinás por WhatsApp.
+          <a routerLink="/como-comprar">¿Cómo compro? →</a>
+        </p>
+      </div>
+      <div class="catalog__toolbar">
+        <p class="catalog__summary">
+          <strong>{{ filteredStickers().length }}</strong> de {{ stickers().length }} figuritas
+          <span>·</span> {{ availableCount() }} disponibles
+        </p>
+        <button class="refresh-button" type="button" [disabled]="isLoading()" (click)="refreshCatalog()">
+          ↻ Refrescar
+        </button>
+      </div>
+    </div>
+
+    <aside class="purchase-notice">
+      <p>
+        Figuritas sueltas comunes $500 o canje 3x1. Escudos $1000 o canje 4x1. Otras brillantes (FWC) $2000 o
+        canje 8x1. Efect. o transf. Retirar: Solo Roldán y Funes (Envíos consultar).
+        <strong>IMPORTANTE</strong>: para que tu pedido esté completo deberás enviarlo por WhatsApp desde el carrito.
+      </p>
+      <a
+        class="whatsapp-link"
+        href="https://api.whatsapp.com/send/?phone=5493412018766&text=Quiero+figuritas+sueltas+del+mundial&type=phone_number&app_absent=0"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span aria-hidden="true">◉</span>
+        Pedir por WhatsApp
+      </a>
+    </aside>
+
+    <app-sticker-filters
+      [searchTerm]="searchTerm()"
+      [groups]="groups()"
+      [selectedGroup]="selectedGroup()"
+      [onlyAvailable]="onlyAvailable()"
+      [onlyFeatured]="onlyFeatured()"
+      (searchTermChange)="searchTerm.set($event)"
+      (selectedGroupChange)="selectedGroup.set($event)"
+      (onlyAvailableChange)="onlyAvailable.set($event)"
+      (onlyFeaturedChange)="onlyFeatured.set($event)"
+    />
+
+    @if (isLoading()) {
+      <div class="state" aria-live="polite">
+        <span class="loader"></span>
+        <p>Cargando figuritas...</p>
+      </div>
+    } @else if (hasError()) {
+      <div class="state">
+        <h3>No pudimos cargar el catálogo</h3>
+        <p>Revisá que la API esté disponible y volvé a intentar.</p>
+        <button type="button" (click)="refreshCatalog()">Reintentar</button>
+      </div>
+    } @else if (!filteredStickers().length) {
+      <div class="state">
+        <h3>No encontramos coincidencias</h3>
+        <p>Probá con otro SKU o modificá los filtros.</p>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (sticker of filteredStickers(); track sticker.sku) {
+          <app-sticker-card
+            [sticker]="sticker"
+            [availableStock]="cart.availableStock(sticker)"
+            (reserve)="reserve($event)"
+          />
+        }
+      </div>
+    }
+  </section>
+</main>
+
+<footer>
+  <span class="brand">
+    <span class="brand__mark" aria-hidden="true">
+      <img src="/images/logo-fifa-26.jpg" alt="" />
+    </span>
+    <span>FIGURITAS</span>
+  </span>
+  <p>Tu álbum, más cerca de completarse.</p>
+</footer>
+
+@if (pendingSticker()) {
+  <app-reservation-modal
+    (cancelled)="pendingSticker.set(null)"
+    (submitted)="completeCustomer($event)"
+  />
+}

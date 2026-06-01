@@ -1,0 +1,35 @@
+<article class="card" [class.card--unavailable]="availableStock() === 0">
+  <div class="card__visual">
+    <img
+      class="card__image"
+      [src]="imageUrl"
+      [alt]="sticker().nombre"
+      loading="lazy"
+      (error)="hideMissingImage($event)"
+    />
+    @if (availableStock() > 0) {
+      <span class="card__availability card__availability--available">
+        <strong>{{ availableStock() }}</strong>
+        <span>Disponible</span>
+      </span>
+    } @else {
+      <span class="card__availability card__availability--sold-out">Agotada</span>
+    }
+    <strong>{{ sticker().sku }}</strong>
+    @if (sticker().destacada) {
+      <span class="card__featured"><span aria-hidden="true">☆</span> Destacada</span>
+    }
+  </div>
+
+  <div class="card__body">
+    <div>
+      <p class="card__sku">{{ sticker().sku }}</p>
+      <h2>{{ sticker().nombre }}</h2>
+    </div>
+    <p class="card__price">{{ sticker().precio | currency:'ARS':'symbol-narrow':'1.0-0' }}</p>
+  </div>
+
+  <div class="card__actions">
+    <button type="button" [disabled]="availableStock() === 0" (click)="reserve.emit(sticker())">+ Reservar</button>
+  </div>
+</article>

@@ -1,0 +1,33 @@
+<main class="how-to-buy">
+  <a class="back-link" routerLink="/">← Volver al catálogo</a>
+
+  <header>
+    <p class="eyebrow">Guía rápida</p>
+    <h1>Cómo comprar</h1>
+    <p>Son <strong>5 pasos simples</strong>. En menos de un minuto dejás preparado tu pedido.</p>
+  </header>
+
+  <ol class="steps">
+    @for (step of steps; track step.number) {
+      <li>
+        <span class="step-number">{{ step.number }}</span>
+        <div>
+          <h2>{{ step.title }}</h2>
+          <p>{{ step.description }}</p>
+        </div>
+      </li>
+    }
+  </ol>
+
+  <section class="questions">
+    <h2>Preguntas comunes</h2>
+    @for (item of questions; track item.question) {
+      <div>
+        <h3>{{ item.question }}</h3>
+        <p>{{ item.answer }}</p>
+      </div>
+    }
+  </section>
+
+  <a class="catalog-link" routerLink="/">Ver el catálogo →</a>
+</main>

@@ -1,0 +1,100 @@
+<main class="cart">
+  <header>
+    <a routerLink="/" (click)="clearConfirmedOrder()">← Catálogo</a>
+    <h1>Mi carrito</h1>
+    <a routerLink="/como-comprar">¿Cómo compro?</a>
+  </header>
+
+  @if (createdOrderId()) {
+    <section class="confirmed">
+      <p class="eyebrow">Pedido registrado</p>
+      <h2>¡Reserva enviada!</h2>
+      <p>Tu pedido fue generado correctamente. Un administrador lo validará antes de confirmar la reserva.</p>
+
+      <div class="order-number">
+        <span>ID de pedido</span>
+        <strong>#{{ createdOrderId() }}</strong>
+      </div>
+
+      <div class="confirmed-summary">
+        <span>{{ confirmedTotalItems() }} figuritas</span>
+        <strong>{{ confirmedSubtotal() | currency:'ARS':'symbol-narrow':'1.0-0' }}</strong>
+      </div>
+
+      <div class="confirmed-details">
+        <p><strong>Cliente:</strong> {{ customerName || 'Sin nombre' }}</p>
+        <p><strong>Teléfono:</strong> {{ cart.customer()?.phone }}</p>
+        @if (notes) {
+          <p><strong>Notas:</strong> {{ notes }}</p>
+        }
+        <ul>
+          @for (item of confirmedItems(); track item.sticker.sku) {
+            <li>{{ item.sticker.sku }} x{{ item.quantity }} · {{ item.sticker.nombre }}</li>
+          }
+        </ul>
+      </div>
+
+      <button type="button" (click)="startNewOrder()">← Volver al catálogo</button>
+    </section>
+  } @else if (!cart.items().length) {
+    <section class="empty">
+      <h2>Carrito vacío</h2>
+      <p>Todavía no agregaste ninguna figurita. Volvé al catálogo y tocá “Reservar” en las que quieras.</p>
+      <a class="catalog-button" routerLink="/">← Volver al catálogo</a>
+    </section>
+  } @else {
+    <section class="items">
+      @for (item of cart.items(); track item.sticker.sku) {
+        <article>
+          <img [src]="imageUrl(item.sticker)" [alt]="item.sticker.nombre" />
+          <div class="item-info">
+            <p>{{ item.sticker.sku }}</p>
+            <h2>{{ item.sticker.nombre }}</h2>
+            <span>{{ item.sticker.grupo }} · {{ item.sticker.precio | currency:'ARS':'symbol-narrow':'1.0-0' }} c/u</span>
+          </div>
+          <strong class="price">{{ item.sticker.precio * item.quantity | currency:'ARS':'symbol-narrow':'1.0-0' }}</strong>
+          <div class="controls">
+            <button type="button" (click)="cart.decrease(item.sticker)">−</button>
+            <strong>{{ item.quantity }}</strong>
+            <button type="button" [disabled]="item.quantity >= item.sticker.disponible" (click)="cart.add(item.sticker)">+</button>
+            <button class="remove" type="button" aria-label="Eliminar figurita" (click)="cart.remove(item.sticker)">×</button>
+          </div>
+        </article>
+      }
+    </section>
+
+    <section class="summary">
+      <span>Subtotal</span>
+      <strong>{{ cart.subtotal() | currency:'ARS':'symbol-narrow':'1.0-0' }}</strong>
+      <p>{{ cart.totalItems() }} figuritas</p>
+    </section>
+
+    <section class="checkout">
+      <h2>Finalizar pedido</h2>
+
+      <label>
+        <span>Nombre</span>
+        <input type="text" autocomplete="name" placeholder="Tu nombre" [(ngModel)]="customerName" />
+      </label>
+
+      <p class="customer-phone">Teléfono: {{ cart.customer()?.phone }}</p>
+
+      <label>
+        <span>Notas (opcional)</span>
+        <textarea
+          rows="3"
+          placeholder="Dónde te conviene retirar, horarios, etc."
+          [(ngModel)]="notes"
+        ></textarea>
+      </label>
+
+      <button type="button" [disabled]="isSubmitting()" (click)="submitOrder()">
+        {{ isSubmitting() ? 'Registrando pedido...' : 'Enviar pedido por WhatsApp' }}
+      </button>
+      @if (submitError()) {
+        <p class="submit-error">{{ submitError() }}</p>
+      }
+      <p>Tu reserva queda firme por 24 horas una vez enviado el WhatsApp.</p>
+    </section>
+  }
+</main>

@@ -1,0 +1,137 @@
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #222825;
+  border-radius: 1rem;
+  background: rgba(20, 24, 22, 0.88);
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.18);
+}
+
+.search {
+  display: flex;
+  flex: 1;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0 0.9rem;
+  border: 1px solid #313936;
+  border-radius: 0.65rem;
+  background: #0d100f;
+
+  &:focus-within {
+    border-color: #73c953;
+    box-shadow: 0 0 0 3px rgba(115, 201, 83, 0.12);
+  }
+
+  input {
+    width: 100%;
+    padding: 0.85rem 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #f4f7f5;
+  }
+}
+
+.search__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #8c9993;
+
+  svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+  }
+}
+
+.group {
+  select {
+    min-width: 10rem;
+    padding: 0.82rem 2.2rem 0.82rem 0.8rem;
+    border: 1px solid #313936;
+    border-radius: 0.65rem;
+    outline: 0;
+    background: #0d100f;
+    color: #dbe3df;
+    cursor: pointer;
+
+    &:focus {
+      border-color: #73c953;
+      box-shadow: 0 0 0 3px rgba(115, 201, 83, 0.12);
+    }
+  }
+}
+
+.availability {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0 0.7rem;
+  color: #dbe3df;
+  cursor: pointer;
+  white-space: nowrap;
+
+  input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  input:checked + .availability__check {
+    border-color: #73c953;
+    background: #73c953;
+
+    &::after {
+      opacity: 1;
+    }
+  }
+
+  input:focus-visible + .availability__check {
+    outline: 3px solid rgba(115, 201, 83, 0.32);
+    outline-offset: 2px;
+  }
+}
+
+.availability__check {
+  display: grid;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1px solid #53605a;
+  border-radius: 0.3rem;
+  place-items: center;
+
+  &::after {
+    width: 0.48rem;
+    height: 0.25rem;
+    border-bottom: 2px solid #071008;
+    border-left: 2px solid #071008;
+    content: '';
+    opacity: 0;
+    transform: rotate(-45deg) translateY(-1px);
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+@media (max-width: 580px) {
+  .filters {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .availability {
+    padding: 0.35rem 0.2rem;
+  }
+
+  .group select {
+    width: 100%;
+  }
+}
