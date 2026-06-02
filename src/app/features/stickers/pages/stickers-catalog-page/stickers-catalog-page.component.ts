@@ -7,6 +7,7 @@ import { CartCustomer } from '../../../../core/models/cart.model';
 import { Sticker } from '../../../../core/models/sticker.model';
 import { AlbumsApiService } from '../../../../core/services/albums-api.service';
 import { CartService } from '../../../../core/services/cart.service';
+import { RuntimeConfigService } from '../../../../core/services/runtime-config.service';
 import { StickersApiService } from '../../../../core/services/stickers-api.service';
 import { ReservationModalComponent } from '../../../cart/components/reservation-modal/reservation-modal.component';
 import { StickerCardComponent } from '../../components/sticker-card/sticker-card.component';
@@ -23,6 +24,7 @@ export class StickersCatalogPageComponent {
   private readonly albumId = 1;
   private readonly albumsApi = inject(AlbumsApiService);
   readonly cart = inject(CartService);
+  readonly runtimeConfig = inject(RuntimeConfigService);
   private readonly stickersApi = inject(StickersApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });

@@ -127,6 +127,26 @@ Ejemplo:
 ARG_17_1.jpg
 ```
 
+## Configuración de WhatsApp
+
+El número receptor de WhatsApp se configura en runtime desde:
+
+```text
+public/config/app-config.js
+```
+
+Contenido:
+
+```js
+window.__APP_CONFIG__ = {
+  whatsappPhone: '5493412018766'
+};
+```
+
+Utilizar el número completo con código de país, sin `+`, espacios ni guiones. El mismo valor se aplica al botón `Pedir por WhatsApp` del catálogo y al envío del pedido desde el carrito.
+
+En un despliegue se puede modificar el archivo `config/app-config.js` del build publicado sin recompilar la aplicación.
+
 ## Estructura
 
 ```text

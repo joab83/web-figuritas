@@ -7,6 +7,7 @@ import { CreateOrderRequest } from '../../../../core/models/order.model';
 import { Sticker } from '../../../../core/models/sticker.model';
 import { CartService } from '../../../../core/services/cart.service';
 import { OrdersApiService } from '../../../../core/services/orders-api.service';
+import { RuntimeConfigService } from '../../../../core/services/runtime-config.service';
 import { formatStickerSku, getGroupName } from '../../../../core/utils/sticker-formatters';
 
 @Component({
@@ -20,6 +21,7 @@ export class CartPageComponent {
   readonly cart = inject(CartService);
   private readonly ordersApi = inject(OrdersApiService);
   private readonly router = inject(Router);
+  private readonly runtimeConfig = inject(RuntimeConfigService);
   readonly isSubmitting = signal(false);
   readonly submitError = signal('');
   readonly createdOrderId = signal<number | null>(null);
@@ -101,7 +103,7 @@ export class CartPageComponent {
       `ID de pedido: ${orderId}`
     ].join('\n');
 
-    return `https://api.whatsapp.com/send/?phone=5493412018766&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
+    return this.runtimeConfig.getWhatsappUrl(message);
   }
 
   private formatPrice(value: number): string {
